@@ -4,15 +4,17 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var hbs= require('express-handlebars')
+var fileUpload=require('express-fileupload') //to upload file(install npm i express-fileupload)
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+var userRouter = require('./routes/user');
+var adminRouter = require('./routes/admin');
 
 var app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
+//setup engine for create extra folder partail and layout to make default
 app.engine('hbs',hbs( {extname:'hbs',defaultLayout:'layout',layoutsDir:__dirname+'/views/layout/',partialsDir:__dirname+'/views/partials/'}))
 
 app.use(logger('dev'));
@@ -21,8 +23,9 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
+app.use(fileUpload())  //use fileupload in this middleware
+app.use('/', userRouter);
+app.use('/admin', adminRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
