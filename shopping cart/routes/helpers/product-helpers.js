@@ -1,5 +1,6 @@
 var db=require('/home/rafeeq/Desktop/Nodejs/project/shopping cart/config/connection.js')
 var collection=require("/home/rafeeq/Desktop/Nodejs/project/shopping cart/config/collections.js")
+var objectId=require('mongodb').ObjectID
 module.exports={
     addProduct:(product,callback)=>{
         console.log(product)
@@ -14,6 +15,13 @@ module.exports={
             resolve(products)
         })
 
+    },
+    deleteProduct:(prodId)=>{
+        return new Promise((resolve,reject)=>{
+            db.get().collection(collection.PRODUCT_COLLECTION).removeOne({_id:objectId(prodId)}).then((response)=>{
+                resolve(response)
+            })
+        })
     }
 
     

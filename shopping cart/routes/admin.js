@@ -1,3 +1,4 @@
+const { response } = require("express");
 var express = require("express");
 var router = express.Router();
 var productHelpers = require("./helpers/product-helpers");
@@ -43,4 +44,14 @@ router.post("/add-product", (req, res) => {
   });
 });
 
+router.get('/delete-product/:id',(req,res)=>{
+  let proId=req.params.id //it is for Id from parameter from view-product.hbs or(req.query.id (product?id={{this._id}}) in view-product)
+  productHelpers.deleteProduct(proId).then( (response)=>{
+    res.redirect('/admin/')
+  })
+})
+router.get('/edit-product',(req,res)=>{
+  let proId=req.query.id
+  
+})
 module.exports = router;
