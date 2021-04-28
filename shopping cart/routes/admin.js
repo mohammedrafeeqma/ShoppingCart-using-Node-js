@@ -50,8 +50,21 @@ router.get('/delete-product/:id',(req,res)=>{
     res.redirect('/admin/')
   })
 })
-router.get('/edit-product',(req,res)=>{
+router.get('/edit-product',async(req,res)=>{
   let proId=req.query.id
+  let product= await productHelpers.getProductDetails(proId)
+  res.render('admin/edit-product',{product})
   
+})
+router.post('/edit-product/:id',(req,res)=>{
+  productHelpers.updateProduct(req.params.id,req.body).then( ()=>{
+    res.redirect('/admin')
+    if(req.files.Image){
+      let image=req.files.Image
+      image.mv("/home/rafeeq/Desktop/Nodejs/project/shopping cart/public/product-images/" +
+      req.params.id + ".jpg")
+    }
+
+  })
 })
 module.exports = router;
